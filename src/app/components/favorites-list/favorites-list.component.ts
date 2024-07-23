@@ -35,8 +35,7 @@ export class FavoritesListComponent implements OnInit {
   }
 
   removeFavorite(brewery: Brewery): void {
-    this.favorites = this.favorites.filter(f => f.id !== brewery.id);
-    localStorage.setItem('favorites', JSON.stringify(this.favorites));
+    this.breweryService.removeFromFavorites(brewery);
   }
 
   goBack(): void {
