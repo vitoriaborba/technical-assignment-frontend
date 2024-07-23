@@ -17,7 +17,7 @@ export class BreweryListComponent implements OnInit {
   filters = { name: '', city: '', state: '', breweryType: '' };
   page: number = 1;
   perPage: number = 10;
-  totalItems: number = 0;
+  totalItems: number = 0; // Update this if you get total items from the API
 
   constructor(private breweryService: BreweryService) {}
 
@@ -46,34 +46,49 @@ export class BreweryListComponent implements OnInit {
     this.applyFilters(); // Apply filters after clearing
   }
 
+  searchBreweries(): void {
+    this.breweryService.searchBreweries(
+      this.filters.name,
+      this.filters.city,
+      this.filters.state,
+      this.filters.breweryType,
+      this.page,
+      this.perPage
+    ).subscribe(data => {
+      this.breweries = data;
+      // Optionally update totalItems if your backend provides this information
+    });
+  }
+
   onPageChange(page: number): void {
     if (page > 0 && page <= Math.ceil(this.totalItems / this.perPage)) {
-      this.loadBreweries(page);
+      this.page = page;
+      this.searchBreweries(); // Use searchBreweries to keep filters
     }
   }
 
   onSearchTermChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.filters.name = input.value;
-    this.applyFilters(); // Apply filters after searching
+    this.searchBreweries(); // Trigger search with updated search term
   }
 
   onCityChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.filters.city = input.value;
-    this.applyFilters(); // Apply filters after changing city
+    this.searchBreweries(); // Trigger search with updated city
   }
 
   onStateChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.filters.state = input.value;
-    this.applyFilters(); // Apply filters after changing state
+    this.searchBreweries(); // Trigger search with updated state
   }
 
   onBreweryTypeChange(event: Event): void {
     const select = event.target as HTMLSelectElement;
     this.filters.breweryType = select.value;
-    this.applyFilters(); // Apply filters after changing brewery type
+    this.searchBreweries(); // Trigger search with updated brewery type
   }
 
   addFavorite(brewery: Brewery): void {
@@ -89,14 +104,14 @@ export class BreweryListComponent implements OnInit {
   }
 
   nextPage(): void {
-      this.page++;
-      this.loadBreweries(this.page);
+    this.page++;
+    this.searchBreweries(); // Ensure search is applied to the new page
   }
 
   previousPage(): void {
     if (this.page > 1) {
       this.page--;
-      this.loadBreweries(this.page);
+      this.searchBreweries(); // Ensure search is applied to the new page
     }
   }
 }
