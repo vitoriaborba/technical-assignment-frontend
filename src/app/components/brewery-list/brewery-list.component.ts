@@ -15,14 +15,9 @@ export class BreweryListComponent implements OnInit {
   breweries: Brewery[] = [];
   favorites: Brewery[] = [];
   filters = { name: '', city: '', state: '', breweryType: '' };
-  currentPage = 1;
-  searchTerm: string = '';
-  city: string = '';
-  state: string = '';
-  breweryType: string = '';
   page: number = 1;
   perPage: number = 10;
-  totalItems = 0;
+  totalItems: number = 0;
 
   constructor(private breweryService: BreweryService) {}
 
@@ -33,22 +28,16 @@ export class BreweryListComponent implements OnInit {
     });
   }
 
-  loadBreweries(page: number = 1): void {
-    this.page = page; // Ensure the page number is updated correctly
+  loadBreweries(page: number = this.page): void {
+    this.page = page;
     this.breweryService.getBreweries(page, this.perPage, this.filters).subscribe(breweries => {
       this.breweries = breweries;
-      // Optionally, update totalItems if your backend supports returning the total count
+      // Optionally update totalItems if your backend provides this information
     });
   }
 
   applyFilters(): void {
     this.page = 1; // Reset to the first page
-    this.filters = {
-      name: this.searchTerm,
-      city: this.city,
-      state: this.state,
-      breweryType: this.breweryType
-    };
     this.loadBreweries(); // Load breweries with the applied filters
   }
 
@@ -58,32 +47,32 @@ export class BreweryListComponent implements OnInit {
   }
 
   onPageChange(page: number): void {
-    if (page > 0 && (page - 1) * this.perPage < this.totalItems) {
+    if (page > 0 && page <= Math.ceil(this.totalItems / this.perPage)) {
       this.loadBreweries(page);
     }
   }
 
   onSearchTermChange(event: Event): void {
     const input = event.target as HTMLInputElement;
-    this.searchTerm = input.value;
+    this.filters.name = input.value;
     this.applyFilters(); // Apply filters after searching
   }
 
   onCityChange(event: Event): void {
     const input = event.target as HTMLInputElement;
-    this.city = input.value;
+    this.filters.city = input.value;
     this.applyFilters(); // Apply filters after changing city
   }
 
   onStateChange(event: Event): void {
     const input = event.target as HTMLInputElement;
-    this.state = input.value;
+    this.filters.state = input.value;
     this.applyFilters(); // Apply filters after changing state
   }
 
   onBreweryTypeChange(event: Event): void {
     const select = event.target as HTMLSelectElement;
-    this.breweryType = select.value;
+    this.filters.breweryType = select.value;
     this.applyFilters(); // Apply filters after changing brewery type
   }
 
@@ -100,14 +89,14 @@ export class BreweryListComponent implements OnInit {
   }
 
   nextPage(): void {
-    this.page++;
-    this.loadBreweries(this.page);
+      this.page++;
+      this.loadBreweries(this.page);
   }
-  
+
   previousPage(): void {
     if (this.page > 1) {
       this.page--;
       this.loadBreweries(this.page);
     }
-  }  
+  }
 }
