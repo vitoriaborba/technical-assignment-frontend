@@ -1,0 +1,19 @@
+[
+    {
+      "id": "1",
+      "name": "Brewery One",
+      "brewery_type": "micro",
+      "city": "San Diego",
+      "state": "California",
+      "website_url": "http://breweryone.com"
+    },
+    {
+      "id": "2",
+      "name": "Brewery Two",
+      "brewery_type": "nano",
+      "city": "Austin",
+      "state": "Texas",
+      "website_url": "http://brewerytwo.com"
+    }
+  ]
+  

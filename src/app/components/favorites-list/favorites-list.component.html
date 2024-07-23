@@ -1,0 +1,11 @@
+<h1>Favorite Breweries</h1>
+<button (click)="goBack()">Back</button>
+<ul>
+  <li *ngFor="let brewery of favorites">
+    <a [routerLink]="['/details', brewery.id]">{{ brewery.name }}</a> - {{ brewery.brewery_type }} - {{ brewery.city }}
+    <button (click)="removeFavorite(brewery)">Remove from Favorites</button>
+  </li>
+</ul>
+<div *ngIf="favorites.length === 0">
+    <p>No favorite breweries yet.</p>
+  </div>

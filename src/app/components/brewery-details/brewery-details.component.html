@@ -1,0 +1,13 @@
+<button (click)="goBack()">Back</button>
+<div *ngIf="brewery">
+    <h1>{{ brewery.name }}</h1>
+    <p>Type: {{ brewery.brewery_type }}</p>
+    <p>City: {{ brewery.city }}</p>
+    <p>State: {{ brewery.state }}</p>
+    <p><a [href]="brewery.website_url" target="_blank">Visit Website</a></p>
+    <!-- Add more details as necessary -->
+  </div>
+  <div *ngIf="!brewery">
+    <p>Brewery not found</p>
+  </div>
+  

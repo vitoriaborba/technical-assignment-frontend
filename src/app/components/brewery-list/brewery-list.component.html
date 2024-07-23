@@ -1,0 +1,34 @@
+<h1>Brewery List</h1>
+<button routerLink="/favorites">View Favorites</button>
+
+<!-- Search and Filter Inputs -->
+<input type="text" placeholder="Search by name" (input)="onSearchTermChange($event)" />
+<input type="text" placeholder="Filter by city" (input)="onCityChange($event)" />
+<input type="text" placeholder="Filter by state" (input)="onStateChange($event)" />
+<select (change)="onBreweryTypeChange($event)">
+  <option value="">All Types</option>
+  <option value="micro">Micro</option>
+  <option value="nano">Nano</option>
+  <option value="regional">Regional</option>
+  <option value="brewpub">Brewpub</option>
+  <option value="large">Large</option>
+  <option value="planning">Planning</option>
+  <option value="bar">Bar</option>
+  <option value="contract">Contract</option>
+  <option value="proprietor">Proprietor</option>
+  <option value="closed">Closed</option>
+</select>
+
+<ul>
+  <li *ngFor="let brewery of breweries">
+    <a [routerLink]="['/details', brewery.id]">{{ brewery.name }}</a> - {{ brewery.brewery_type || 'N/A' }} - {{ brewery.city }}
+    <button *ngIf="!isFavorite(brewery)" (click)="addFavorite(brewery)">Add to Favorites</button>
+    <button *ngIf="isFavorite(brewery)" (click)="removeFavorite(brewery)">Remove from Favorites</button>
+  </li>
+</ul>
+
+<div class="pagination">
+    <button (click)="previousPage()" [disabled]="page === 1">Previous</button>
+    <span>Page {{ page }}</span>
+    <button (click)="nextPage()">Next</button>
+  </div>  
