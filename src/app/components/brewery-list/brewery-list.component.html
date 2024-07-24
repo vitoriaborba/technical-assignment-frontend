@@ -1,38 +1,74 @@
-<h1>Brewery List</h1>
-<button routerLink="/favorites">View Favorites</button>
-
-<!-- Search and Filter Inputs -->
-<input type="text" placeholder="Search by name" (input)="onSearchTermChange($event)" />
-<input type="text" placeholder="Filter by city" (input)="onCityChange($event)" />
-<input type="text" placeholder="Filter by state" (input)="onStateChange($event)" />
-<select (change)="onBreweryTypeChange($event)">
-  <option value="">All Types</option>
-  <option value="micro">Micro</option>
-  <option value="nano">Nano</option>
-  <option value="regional">Regional</option>
-  <option value="brewpub">Brewpub</option>
-  <option value="large">Large</option>
-  <option value="planning">Planning</option>
-  <option value="bar">Bar</option>
-  <option value="contract">Contract</option>
-  <option value="proprietor">Proprietor</option>
-  <option value="closed">Closed</option>
-</select>
-
-<div>
-  <div *ngFor="let brewery of breweries">
-    <a [routerLink]="['/details', brewery.id]">
-        <h4>{{ brewery.name }}</h4>
-    </a>
-    <p>Brewery type: {{ brewery.brewery_type | capitalizeFirst}}</p>
-    <p>City: {{ brewery.city }}</p>
-    <button *ngIf="!isFavorite(brewery)" (click)="addFavorite(brewery)">Add to Favorites</button>
-    <button *ngIf="isFavorite(brewery)" (click)="removeFavorite(brewery)">Remove from Favorites</button>
+<div class="column container">
+    <h1>Breweries in the USA 🍻</h1>
+    <div class="flex filter">
+      <button routerLink="/favorites">View Favorites</button>
+  
+      <!-- Search and Filter Inputs -->
+      <input type="text" placeholder="Search by name" (input)="onSearchTermChange($event)" />
+      <input type="text" placeholder="Filter by city" (input)="onCityChange($event)" />
+      <input type="text" placeholder="Filter by state" (input)="onStateChange($event)" />
+      <select (change)="onBreweryTypeChange($event)">
+        <option value="">All Types</option>
+        <option value="micro">Micro</option>
+        <option value="nano">Nano</option>
+        <option value="regional">Regional</option>
+        <option value="brewpub">Brewpub</option>
+        <option value="large">Large</option>
+        <option value="planning">Planning</option>
+        <option value="bar">Bar</option>
+        <option value="contract">Contract</option>
+        <option value="proprietor">Proprietor</option>
+        <option value="closed">Closed</option>
+      </select>
+    </div>
+  
+    <!-- Loading Spinner -->
+    <div *ngIf="loading" class="spinner"></div>
+  
+    <div class="grid">
+      <!-- Breweries Grid -->
+      <div *ngIf="!loading && breweries.length === 0" class="no-breweries-message">
+        <p>No breweries found.</p>
+      </div>
+  
+      <div *ngIf="!loading" class="grid">
+        <div class="items flex column justify-between" *ngFor="let brewery of breweries">
+          <div>
+            <div class="favorite">
+              <i class="fa fa-info-circle info-icon" (click)="showDetails(brewery)"></i>
+              <p>
+                <a [href]="brewery.website_url" target="_blank">
+                  <i class="fa fa-globe" [ngClass]="{'no-website': !brewery.website_url}"></i>
+                </a>
+              </p>
+              <i
+                class="fa-heart"
+                [class.fa-solid]="isFavorite(brewery)"
+                [class.fa-regular]="!isFavorite(brewery)"
+                [class.fav]="isFavorite(brewery)"
+                [class.not-fav]="!isFavorite(brewery)"
+                (click)="toggleFavorite(brewery)"
+              ></i>
+            </div>
+            <h4>{{ brewery.name }}</h4>
+            <p>
+              <i class="fa fa-industry"></i>{{ brewery.brewery_type | capitalizeFirst }}
+            </p>
+          </div>
+          <p class="address">
+            <i class="fa fa-map-marker-alt"></i> {{ brewery.city }}, {{brewery.state}}
+          </p>
+          <div *ngIf="selectedBrewery?.id === brewery.id">
+            <app-brewery-details [brewery]="selectedBrewery" (closeDetails)="hideDetails()"></app-brewery-details>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div *ngIf="!loading && breweries.length !== 0" class="pagination">
+      <button (click)="previousPage()" [disabled]="page === 1"><</button>
+      <span> Page {{ page }} </span>
+      <button (click)="nextPage()">></button>
+    </div>
   </div>
-</div>
-
-<div class="pagination">
-    <button (click)="previousPage()" [disabled]="page === 1">Previous</button>
-    <span>Page {{ page }}</span>
-    <button (click)="nextPage()">Next</button>
-  </div>  
+  

@@ -1,0 +1,152 @@
+/* Flexbox*/
+.flex {
+    display: flex;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.column {
+    flex-direction: column;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh;
+}
+
+.filter {
+    display: flex;
+    gap: 5px;
+    padding-bottom: 15px;
+}
+
+/* Button Styles */
+.filter button,
+.filter select {
+    border: none;
+    background-color: #e9bc09;
+    color: white;
+    width: 100px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.filter input {
+    border: none;
+    background-color: rgb(246, 246, 246);
+    height: 25px;
+}
+
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1250px;
+    height: 400px;
+}
+
+.items {
+    padding: 15px;
+    margin: 10px;
+    background-color: rgba(238, 238, 238, 0.86);
+    width: 200px;
+    height: 150px;
+}
+
+.favorite {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 20px;
+    padding-bottom: 10px;
+}
+
+p {
+    font-size: 15px;
+}
+
+h4 {
+    margin: 0;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    font-size: 15px;
+    padding-bottom: 10px;
+}
+
+.pagination button {
+    border: none;
+    cursor: pointer;
+}
+
+/* Font Awesome Icon Styles */
+.fa-heart {
+    cursor: pointer;
+    font-size: 15px;
+    transition: color 0.3s ease;
+}
+
+.fav {
+    color: rgb(170, 0, 0);
+}
+
+.not-fav {
+    color: gray;
+}
+
+.fa-heart:hover {
+    color: rgb(198, 0, 0);
+}
+
+.fa-map-marker-alt {
+    color: #e9bc09;
+}
+
+.fa-globe {
+    color: #17a2b8;
+}
+
+.no-website {
+    color: gray;
+}
+
+.info-icon {
+    color: #e9bc09;
+    cursor: pointer;
+}
+
+/* Spinner */
+.spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 10;
+}
+
+.spinner::after {
+    content: '';
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #eab629;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

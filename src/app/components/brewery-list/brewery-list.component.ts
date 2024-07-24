@@ -4,13 +4,14 @@ import { RouterModule } from '@angular/router';
 import { BreweryService } from '../../services/brewery.service';
 import { Brewery } from '../../models/brewery.model';
 import { CapitalizeFirstPipe } from '../../capitalize-first.pipe';
+import { BreweryDetailsComponent } from '../brewery-details/brewery-details.component';
 
 @Component({
   selector: 'app-brewery-list',
   templateUrl: './brewery-list.component.html',
   styleUrls: ['./brewery-list.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule, CapitalizeFirstPipe]
+  imports: [CommonModule, RouterModule, CapitalizeFirstPipe, BreweryDetailsComponent]
 })
 export class BreweryListComponent implements OnInit {
   breweries: Brewery[] = [];
@@ -18,7 +19,10 @@ export class BreweryListComponent implements OnInit {
   filters = { name: '', city: '', state: '', breweryType: '' };
   page: number = 1;
   perPage: number = 10;
-  totalItems: number = 0; // Update this if you get total items from the API
+  totalItems: number = 0;
+  selectedBrewery: Brewery | null = null;
+  displayFavorites = false;
+  loading = false; 
 
   constructor(private breweryService: BreweryService) {}
 
@@ -29,25 +33,35 @@ export class BreweryListComponent implements OnInit {
     });
   }
 
+  // Load breweries with pagination and filtering
   loadBreweries(page: number = this.page): void {
     this.page = page;
-    this.breweryService.getBreweries(page, this.perPage, this.filters).subscribe(breweries => {
-      this.breweries = breweries;
-      // Optionally update totalItems if your backend provides this information
+    this.loading = true; // Indicate loading state
+    this.breweryService.getBreweries(page, this.perPage, this.filters).subscribe({
+      next: (breweries) => {
+        this.breweries = breweries;
+        this.loading = false; 
+      },
+      error: (error) => {
+        console.error('Error loading breweries', error);
+        this.loading = false; 
+      }
     });
   }
 
   applyFilters(): void {
-    this.page = 1; // Reset to the first page
-    this.loadBreweries(); // Load breweries with the applied filters
+    this.page = 1; 
+    this.loadBreweries();
   }
 
   clearFilters(): void {
     this.filters = { name: '', city: '', state: '', breweryType: '' };
-    this.applyFilters(); // Apply filters after clearing
+    this.applyFilters();
   }
 
+  // Search breweries based on current filters
   searchBreweries(): void {
+    this.loading = true; 
     this.breweryService.searchBreweries(
       this.filters.name,
       this.filters.city,
@@ -55,46 +69,53 @@ export class BreweryListComponent implements OnInit {
       this.filters.breweryType,
       this.page,
       this.perPage
-    ).subscribe(data => {
-      this.breweries = data;
-      // Optionally update totalItems if your backend provides this information
+    ).subscribe({
+      next: (data) => {
+        this.breweries = data;
+        this.loading = false; 
+      },
+      error: (error) => {
+        console.error('Error searching breweries', error);
+        this.loading = false;
+      }
     });
   }
 
   onPageChange(page: number): void {
     if (page > 0 && page <= Math.ceil(this.totalItems / this.perPage)) {
       this.page = page;
-      this.searchBreweries(); // Use searchBreweries to keep filters
+      this.searchBreweries();
     }
   }
 
   onSearchTermChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.filters.name = input.value;
-    this.searchBreweries(); // Trigger search with updated search term
+    this.searchBreweries();
   }
 
   onCityChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.filters.city = input.value;
-    this.searchBreweries(); // Trigger search with updated city
+    this.searchBreweries();
   }
 
   onStateChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.filters.state = input.value;
-    this.searchBreweries(); // Trigger search with updated state
+    this.searchBreweries();
   }
 
   onBreweryTypeChange(event: Event): void {
     const select = event.target as HTMLSelectElement;
     this.filters.breweryType = select.value;
-    this.searchBreweries(); // Trigger search with updated brewery type
+    this.searchBreweries();
   }
 
   addFavorite(brewery: Brewery): void {
     this.breweryService.addToFavorites(brewery);
   }
+
 
   removeFavorite(brewery: Brewery): void {
     this.breweryService.removeFromFavorites(brewery);
@@ -104,15 +125,31 @@ export class BreweryListComponent implements OnInit {
     return this.favorites.some(fav => fav.id === brewery.id);
   }
 
+  toggleFavorite(brewery: Brewery): void {
+    if (this.isFavorite(brewery)) {
+      this.removeFavorite(brewery);
+    } else {
+      this.addFavorite(brewery);
+    }
+  }
+
+  showDetails(brewery: Brewery): void {
+    this.selectedBrewery = brewery;
+  }
+
+  hideDetails(): void {
+    this.selectedBrewery = null;
+  }
+
   nextPage(): void {
     this.page++;
-    this.searchBreweries(); // Ensure search is applied to the new page
+    this.searchBreweries();
   }
 
   previousPage(): void {
     if (this.page > 1) {
       this.page--;
-      this.searchBreweries(); // Ensure search is applied to the new page
+      this.searchBreweries();
     }
   }
 }

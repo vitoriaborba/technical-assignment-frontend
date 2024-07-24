@@ -1,11 +1,46 @@
-<h1>Favorite Breweries</h1>
-<button (click)="goBack()">Back</button>
-<ul>
-  <li *ngFor="let brewery of favorites">
-    <a [routerLink]="['/details', brewery.id]">{{ brewery.name }}</a> - {{ brewery.brewery_type }} - {{ brewery.city }}
-    <button (click)="removeFavorite(brewery)">Remove from Favorites</button>
-  </li>
-</ul>
-<div *ngIf="favorites.length === 0">
-    <p>No favorite breweries yet.</p>
+<div class="column container">
+    <h1>Personal Breweries Selection 🍻</h1>
+  
+    <div class="flex home">
+      <button (click)="goBack()">Home</button>
+    </div>
+  
+    <div *ngIf="favorites.length === 0" class="no-favorites-message">
+      <p>Your list of favorite breweries is empty.</p>
+    </div>
+  
+    <div class="grid">
+      <div class="items flex column justify-between" *ngFor="let brewery of filteredFavorites">
+        <div>
+          <div class="favorite">
+            <i class="fa fa-info-circle info-icon" (click)="showDetails(brewery)"></i>
+            <p>
+              <a [href]="brewery.website_url" target="_blank">
+                <i class="fa fa-globe" [ngClass]="{'no-website': !brewery.website_url}"></i>
+              </a>
+            </p>
+            <button (click)="removeFavorite(brewery)">Remove</button>
+          </div>
+          <h4>{{ brewery.name }}</h4>
+          <p>
+            <i class="fa fa-industry"></i>{{ brewery.brewery_type | capitalizeFirst }}
+          </p>
+        </div>
+        <p>
+          <i class="fa fa-map-marker-alt"></i> {{ brewery.city }}, {{brewery.state}}
+        </p>
+      </div>
+    </div>
+  
+    <div *ngIf="favorites.length !== 0" class="pagination">
+      <button (click)="previousPage()" [disabled]="page === 1"><</button>
+      <span> Page {{ page }} </span>
+      <button (click)="nextPage()">></button>
+    </div>
+  
+    <!-- Details view -->
+    <div *ngIf="selectedBrewery">
+      <app-brewery-details [brewery]="selectedBrewery" (closeDetails)="hideDetails()"></app-brewery-details>
+    </div>
   </div>
+  

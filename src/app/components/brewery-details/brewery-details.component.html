@@ -1,13 +1,17 @@
-<button (click)="goBack()">Back</button>
-<div *ngIf="brewery">
-    <h1>{{ brewery.name }}</h1>
-    <p>Type: {{ brewery.brewery_type }}</p>
-    <p>City: {{ brewery.city }}</p>
-    <p>State: {{ brewery.state }}</p>
-    <p><a [href]="brewery.website_url" target="_blank">Visit Website</a></p>
-    <!-- Add more details as necessary -->
-  </div>
-  <div *ngIf="!brewery">
-    <p>Brewery not found</p>
-  </div>
+<div class="container">
+    <div *ngIf="brewery" class="brewery-details">
+        <div  class="close">
+        <button (click)="close()">x</button>    
+        </div>
+        <h2>{{ brewery.name }}</h2>
+        <p>
+            <i class="fa fa-industry"></i> {{ brewery.brewery_type | capitalizeFirst }}
+        </p>
+        <p>{{ brewery.street }}, {{ brewery.city }}, {{ brewery.state }}</p>
+        <p>
+            <i class="fa fa-phone"></i> (+1) {{ brewery.phone || 'N/A' }}
+        </p>
+    </div> 
+</div>
+
   

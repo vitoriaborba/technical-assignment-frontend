@@ -1,0 +1,122 @@
+/* Flexbox Utilities */
+.flex {
+    display: flex;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Container Styles */
+.container {
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh;
+}
+
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1250px;
+    height: 400px;
+}
+
+.home,
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 15px;
+    font-size: 15px;
+}
+
+.home button,
+.items button,
+.filter button,
+.filter select {
+    border: none;
+    background-color: #e9bc09;
+    color: white;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.filter input {
+    border: none;
+    background-color: rgb(246, 246, 246);
+    height: 25px;
+}
+
+.filter {
+    gap: 5px;
+}
+
+.items {
+    padding: 15px;
+    margin: 10px;
+    background-color: rgba(250, 247, 247, 0.825);
+    width: 200px;
+    height: 150px;
+}
+
+.favorite,
+.no-favorites-message {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.favorite {
+    height: 20px;
+    padding-bottom: 10px;
+}
+
+.no-favorites-message {
+    height: 400px;
+}
+
+.no-favorites-message p {
+    padding-top: 100px;
+}
+
+.pagination button {
+    border: none;
+}
+
+/* Text and Link Styles */
+a {
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+}
+
+p {
+    font-size: 15px;
+}
+
+h4 {
+    margin: 0;
+}
+
+/* Font Awesome Icon Styles */
+
+.fa-map-marker-alt {
+    color: #e9bc09;
+}
+
+.fa-globe {
+    color: #17a2b8;
+}
+
+.no-website {
+    color: gray;
+}
+
+.info-icon {
+    cursor: pointer;
+    color: #e9bc09;
+}
