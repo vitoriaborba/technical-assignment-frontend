@@ -91,18 +91,12 @@ export class BreweryService {
       name: apiResponse.name,
       brewery_type: apiResponse.brewery_type || null,
       address_1: apiResponse.address_1 || null,
-      address_2: apiResponse.address_2 || null,
-      address_3: apiResponse.address_3 || null,
       city: apiResponse.city,
-      state_province: apiResponse.state_province,
       postal_code: apiResponse.postal_code || null,
       country: apiResponse.country,
-      longitude: apiResponse.longitude || null,
-      latitude: apiResponse.latitude || null,
       phone: apiResponse.phone || null,
       website_url: apiResponse.website_url || null,
       state: apiResponse.state,
-      street: apiResponse.street || null,
     };
   }
 }
