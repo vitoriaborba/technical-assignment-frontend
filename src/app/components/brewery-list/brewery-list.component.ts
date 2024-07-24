@@ -3,13 +3,14 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { BreweryService } from '../../services/brewery.service';
 import { Brewery } from '../../models/brewery.model';
+import { CapitalizeFirstPipe } from '../../capitalize-first.pipe';
 
 @Component({
   selector: 'app-brewery-list',
   templateUrl: './brewery-list.component.html',
   styleUrls: ['./brewery-list.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule]
+  imports: [CommonModule, RouterModule, CapitalizeFirstPipe]
 })
 export class BreweryListComponent implements OnInit {
   breweries: Brewery[] = [];

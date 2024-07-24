@@ -19,13 +19,17 @@
   <option value="closed">Closed</option>
 </select>
 
-<ul>
-  <li *ngFor="let brewery of breweries">
-    <a [routerLink]="['/details', brewery.id]">{{ brewery.name }}</a> - {{ brewery.brewery_type || 'N/A' }} - {{ brewery.city }}
+<div>
+  <div *ngFor="let brewery of breweries">
+    <a [routerLink]="['/details', brewery.id]">
+        <h4>{{ brewery.name }}</h4>
+    </a>
+    <p>Brewery type: {{ brewery.brewery_type | capitalizeFirst}}</p>
+    <p>City: {{ brewery.city }}</p>
     <button *ngIf="!isFavorite(brewery)" (click)="addFavorite(brewery)">Add to Favorites</button>
     <button *ngIf="isFavorite(brewery)" (click)="removeFavorite(brewery)">Remove from Favorites</button>
-  </li>
-</ul>
+  </div>
+</div>
 
 <div class="pagination">
     <button (click)="previousPage()" [disabled]="page === 1">Previous</button>
